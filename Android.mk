@@ -16,6 +16,7 @@
 
 common_exynos_dirs := \
 	libcsc \
-	libv4l2
+	libv4l2 \
+	libexynosutils
 
 include $(call all-named-subdir-makefiles,$(common_exynos_dirs))
