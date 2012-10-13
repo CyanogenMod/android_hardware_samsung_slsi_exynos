@@ -11,8 +11,8 @@ LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
 
 LOCAL_C_INCLUDES := \
 	system/core/include \
-	$(LOCAL_PATH)/../../openmax/include/khronos \
-	$(LOCAL_PATH)/../../openmax/include/$(OMX_NAME) \
+	hardware/samsung_slsi/openmax/include/khronos \
+	hardware/samsung_slsi/openmax/include/$(OMX_NAME) \
 	hardware/samsung_slsi/exynos5/include \
 	hardware/samsung_slsi/exynos/include
 
@@ -35,8 +35,8 @@ LOCAL_SRC_FILES := \
 
 LOCAL_C_INCLUDES := \
 	hardware/samsung_slsi/exynos5/include \
-	$(LOCAL_PATH)/../../openmax/include/khronos \
-	$(LOCAL_PATH)/../../openmax/include/$(OMX_NAME) \
+	hardware/samsung_slsi/openmax/include/khronos \
+	hardware/samsung_slsi/openmax/include/$(OMX_NAME) \
 	$(LOCAL_PATH)/../libexynosutils
 
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
