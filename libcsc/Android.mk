@@ -5,20 +5,20 @@ OMX_NAME := exynos
 include $(CLEAR_VARS)
 
 LOCAL_SRC_FILES := \
-    csc_helper.c
+	csc_helper.c
 
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
 
 LOCAL_C_INCLUDES := \
-    system/core/include \
-    $(LOCAL_PATH)/../../openmax/include/khronos \
-    $(LOCAL_PATH)/../../openmax/include/$(OMX_NAME) \
-    hardware/samsung_slsi/exynos5/include \
-    hardware/samsung_slsi/exynos/include
+	system/core/include \
+	$(LOCAL_PATH)/../../openmax/include/khronos \
+	$(LOCAL_PATH)/../../openmax/include/$(OMX_NAME) \
+	hardware/samsung_slsi/exynos5/include \
+	hardware/samsung_slsi/exynos/include
 
 LOCAL_CFLAGS := \
-    -DUSE_SAMSUNG_COLORFORMAT \
-    -DEXYNOS_OMX
+	-DUSE_SAMSUNG_COLORFORMAT \
+	-DEXYNOS_OMX
 
 LOCAL_MODULE := libcsc_helper
 LOCAL_MODULE_TAGS := optional
@@ -34,7 +34,7 @@ LOCAL_SRC_FILES := \
 	csc.c
 
 LOCAL_C_INCLUDES := \
-    hardware/samsung_slsi/exynos5/include \
+	hardware/samsung_slsi/exynos5/include \
 	$(LOCAL_PATH)/../../openmax/include/khronos \
 	$(LOCAL_PATH)/../../openmax/include/$(OMX_NAME) \
 	$(LOCAL_PATH)/../libexynosutils
