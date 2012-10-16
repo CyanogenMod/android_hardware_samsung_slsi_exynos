@@ -15,6 +15,7 @@
 #
 
 common_exynos_dirs := \
+	libstagefrighthw \
 	libcsc \
 	libv4l2 \
 	libexynosutils
