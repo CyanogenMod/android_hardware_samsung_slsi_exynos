@@ -42,6 +42,54 @@ void VOID_FUNC(const char *format, ...);
 #define PRINTD VOID_FUNC
 #endif
 
+struct Fimg {
+    int             srcX;
+    int             srcY;
+    unsigned int    srcW;
+    unsigned int    srcH;
+    unsigned int    srcFWStride; // this is not w, just stride (w * bpp)
+    unsigned int    srcFH;
+    unsigned int    srcBPP;
+    int             srcColorFormat;
+    unsigned char  *srcAddr;
+
+    int             dstX;
+    int             dstY;
+    unsigned int    dstW;
+    unsigned int    dstH;
+    unsigned int    dstFWStride; // this is not w, just stride (w * bpp)
+    unsigned int    dstFH;
+    unsigned int    dstBPP;
+    int             dstColorFormat;
+    unsigned char  *dstAddr;
+
+    int             clipT;
+    int             clipB;
+    int             clipL;
+    int             clipR;
+
+    int             mskX;
+    int             mskY;
+    unsigned int    mskW;
+    unsigned int    mskH;
+    unsigned int    mskFWStride; // this is not w, just stride (w * bpp)
+    unsigned int    mskFH;
+    unsigned int    mskBPP;
+    int             mskColorFormat;
+    unsigned char  *mskAddr;
+
+    unsigned long   fillcolor;
+    int             rotate;
+    unsigned int    alpha;
+    int             xfermode;
+    int             isDither;
+    int             isFilter;
+    int             colorFilter;
+    int             matrixType;
+    float           matrixSx;
+    float           matrixSy;
+};
+
 #ifdef __cplusplus
 
 struct blit_op_table {
