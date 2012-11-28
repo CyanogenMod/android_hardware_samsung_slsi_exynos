@@ -18,6 +18,7 @@ common_exynos_dirs := \
 	libstagefrighthw \
 	libcsc \
 	libv4l2 \
-	libexynosutils
+	libexynosutils \
+	libfimg4x
 
 include $(call all-named-subdir-makefiles,$(common_exynos_dirs))
