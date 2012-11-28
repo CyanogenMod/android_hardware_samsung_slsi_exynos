@@ -27,6 +27,9 @@ LOCAL_SRC_FILES:= \
 	FimgApi.cpp   \
 	FimgExynos5.cpp
 
+LOCAL_C_INCLUDES += \
+	$(LOCAL_PATH)/../include
+
 LOCAL_SHARED_LIBRARIES:= liblog libutils libbinder
 
 LOCAL_MODULE:= libfimg
