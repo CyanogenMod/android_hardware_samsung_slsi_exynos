@@ -18,9 +18,6 @@ LOCAL_PATH:= $(call my-dir)
 include $(CLEAR_VARS)
 
 ifeq ($(BOARD_USES_SKIA_FIMGAPI),true)
-LOCAL_CFLAGS     += -DBOARD_USES_SKIA_FIMGAPI
-
-LOCAL_C_INCLUDES += external/skia/include/core
 LOCAL_MODULE_TAGS := optional
 
 LOCAL_SRC_FILES:= \
