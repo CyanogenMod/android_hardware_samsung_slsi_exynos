@@ -55,6 +55,13 @@ typedef enum _CSC_HW_PROPERTY_TYPE {
     CSC_HW_PROPERTY_MODE_DRM,
 } CSC_HW_PROPERTY_TYPE;
 
+typedef enum _CSC_MEMTYPE {
+    CSC_MEMORY_MMAP = 1,
+    CSC_MEMORY_USERPTR,
+    CSC_MEMORY_OVERLAY,
+    CSC_MEMORY_DMABUF,
+} CSC_MEMTYPE;
+
 /*
  * change hal pixel format to omx pixel format
  *
@@ -332,7 +339,8 @@ CSC_ERRORCODE csc_set_dst_format(
  */
 CSC_ERRORCODE csc_set_src_buffer(
     void *handle,
-    void *addr[CSC_MAX_PLANES]);
+    void *addr[CSC_MAX_PLANES],
+    int mem_type);
 
 /*
  * Setup destination buffer
@@ -354,7 +362,8 @@ CSC_ERRORCODE csc_set_src_buffer(
  */
 CSC_ERRORCODE csc_set_dst_buffer(
     void *handle,
-    void *addr[CSC_MAX_PLANES]);
+    void *addr[CSC_MAX_PLANES],
+    int mem_type);
 
 /*
  * Convert color space with presetup color format
