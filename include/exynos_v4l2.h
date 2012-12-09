@@ -103,6 +103,8 @@ int exynos_subdev_open(const char *filename, int oflag, ...);
 /*! \ingroup exynos_v4l2 */
 int exynos_subdev_open_devname(const char *devname, int oflag, ...);
 /*! \ingroup exynos_v4l2 */
+int exynos_subdev_close(int fd);
+/*! \ingroup exynos_v4l2 */
 int exynos_subdev_enum_frame_size(int fd, struct v4l2_subdev_frame_size_enum *frame_size_enum);
 /*! \ingroup exynos_v4l2 */
 int exynos_subdev_g_fmt(int fd, struct v4l2_subdev_format *fmt);

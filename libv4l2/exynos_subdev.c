@@ -131,6 +131,19 @@ int exynos_subdev_open_devname(const char *devname, int oflag, ...)
     return fd;
 }
 
+int exynos_subdev_close(int fd)
+{
+    int ret = -1;
+
+    ALOGE("%s", __func__);
+    if (fd < 0)
+        ALOGE("%s: invalid fd: %d", __func__, fd);
+    else
+        ret = close(fd);
+
+    return ret;
+}
+
 /**
  * @brief enum frame size on a pad.
  * @return 0 on success, or a negative error code on failure.
