@@ -519,6 +519,30 @@ CSC_ERRORCODE csc_get_method(
     return ret;
 }
 
+CSC_ERRORCODE csc_set_method(
+    void           *handle,
+    CSC_METHOD      method)
+{
+    CSC_HANDLE *csc_handle;
+    CSC_ERRORCODE ret = CSC_ErrorNone;
+
+    if (handle == NULL)
+        return CSC_ErrorNotInit;
+    csc_handle = (CSC_HANDLE *)handle;
+
+    switch (method) {
+    case CSC_METHOD_SW:
+    case CSC_METHOD_HW:
+        csc_handle->csc_method = method;
+        break;
+    default:
+        ret = CSC_Error;
+        break;
+    }
+
+    return ret;
+}
+
 CSC_ERRORCODE csc_set_hw_property(
     void                *handle,
     CSC_HW_PROPERTY_TYPE property,
