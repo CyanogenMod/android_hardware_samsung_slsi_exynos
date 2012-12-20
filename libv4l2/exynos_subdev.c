@@ -135,7 +135,6 @@ int exynos_subdev_close(int fd)
 {
     int ret = -1;
 
-    ALOGE("%s", __func__);
     if (fd < 0)
         ALOGE("%s: invalid fd: %d", __func__, fd);
     else
