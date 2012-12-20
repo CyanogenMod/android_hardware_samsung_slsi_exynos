@@ -67,6 +67,61 @@ int exynos_subdev_open(const char *filename, int oflag, ...)
     return fd;
 }
 
+int exynos_subdev_get_node_num(const char *devname, int oflag, ...)
+{
+    bool found = false;
+    int ret = -1;
+    struct stat s;
+    va_list ap;
+    FILE *stream_fd;
+    char filename[64], name[64];
+    int minor, size, i = 0;
+
+    do {
+        if (i > (SUBDEV_MINOR_MAX - 128))
+            break;
+
+        /* video device node */
+        sprintf(filename, "/dev/v4l-subdev%d", i++);
+
+        /* if the node is video device */
+        if ((lstat(filename, &s) == 0) && S_ISCHR(s.st_mode) &&
+                ((int)((unsigned short)(s.st_rdev) >> 8) == 81)) {
+            minor = (int)((unsigned short)(s.st_rdev & 0x3f));
+            ALOGD("try node: %s, minor: %d", filename, minor);
+            /* open sysfs entry */
+            sprintf(filename, "/sys/class/video4linux/v4l-subdev%d/name", minor);
+            stream_fd = fopen(filename, "r");
+            if (stream_fd == NULL) {
+                ALOGE("failed to open sysfs entry for subdev");
+                continue;   /* try next */
+            }
+
+            /* read sysfs entry for device name */
+            size = (int)fgets(name, sizeof(name), stream_fd);
+            fclose(stream_fd);
+
+            /* check read size */
+            if (size == 0) {
+                ALOGE("failed to read sysfs entry for subdev");
+            } else {
+                /* matched */
+                if (strncmp(name, devname, strlen(devname)) == 0) {
+                    ALOGI("node found for device %s: /dev/v4l-subdev%d", devname, minor);
+                    found = true;
+                }
+            }
+        }
+    } while (found == false);
+
+    if (found)
+        ret = minor;
+    else
+        ALOGE("no subdev device found");
+
+    return ret;
+}
+
 int exynos_subdev_open_devname(const char *devname, int oflag, ...)
 {
     bool found = false;
