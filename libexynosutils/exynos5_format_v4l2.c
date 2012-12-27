@@ -194,6 +194,10 @@ int V4L2_PIX_2_HAL_PIXEL_FORMAT(
         hal_pixel_format = HAL_PIXEL_FORMAT_CUSTOM_YCbCr_420_SP;
         break;
 
+    case V4L2_PIX_FMT_NV21M:
+        hal_pixel_format = HAL_PIXEL_FORMAT_EXYNOS_YCrCb_420_SP;
+        break;
+
     case V4L2_PIX_FMT_YUYV:
         hal_pixel_format = HAL_PIXEL_FORMAT_CUSTOM_YCbCr_422_I;
         break;
