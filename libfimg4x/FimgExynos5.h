@@ -49,7 +49,7 @@ namespace android
 #define GET_RECT_SIZE(rect)        ((rect->full_w) * (rect->h) * (rect->bytes_per_pixel))
 #define GET_REAL_SIZE(rect)        ((rect->full_w) * (rect->h) * (rect->bytes_per_pixel))
 #define GET_START_ADDR(rect)       (rect->virt_addr + ((rect->y * rect->full_w) * rect->bytes_per_pixel))
-#define SLEEP_TIME                 (3000000) // 3 sec
+#define SLEEP_TIME                 (100000) // 100 msec
 
 //---------------------------------------------------------------------------//
 // class FimgV4x : public FimgBase
