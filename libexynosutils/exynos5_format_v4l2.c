@@ -85,7 +85,7 @@ int HAL_PIXEL_FORMAT_2_V4L2_PIX(
 
     case HAL_PIXEL_FORMAT_YCbCr_422_SP:
     case HAL_PIXEL_FORMAT_CUSTOM_YCbCr_422_SP:
-        v4l2_pixel_format = V4L2_PIX_FMT_NV61;
+        v4l2_pixel_format = V4L2_PIX_FMT_NV16;
         break;
 
     case HAL_PIXEL_FORMAT_YCbCr_420_SP:
@@ -109,7 +109,7 @@ int HAL_PIXEL_FORMAT_2_V4L2_PIX(
 
     case HAL_PIXEL_FORMAT_YCrCb_422_SP:
     case HAL_PIXEL_FORMAT_CUSTOM_YCrCb_422_SP:
-        v4l2_pixel_format = V4L2_PIX_FMT_NV16;
+        v4l2_pixel_format = V4L2_PIX_FMT_NV61;
         break;
 
     case HAL_PIXEL_FORMAT_EXYNOS_YCrCb_420_SP:
@@ -183,7 +183,7 @@ int V4L2_PIX_2_HAL_PIXEL_FORMAT(
          break;
 
     case V4L2_PIX_FMT_NV16:
-        hal_pixel_format = HAL_PIXEL_FORMAT_CUSTOM_YCrCb_422_SP;
+        hal_pixel_format = HAL_PIXEL_FORMAT_CUSTOM_YCbCr_422_SP;
         break;
 
     case V4L2_PIX_FMT_NV12:
@@ -219,7 +219,7 @@ int V4L2_PIX_2_HAL_PIXEL_FORMAT(
         break;
 
     case V4L2_PIX_FMT_NV61:
-        hal_pixel_format = HAL_PIXEL_FORMAT_CUSTOM_YCbCr_422_SP;
+        hal_pixel_format = HAL_PIXEL_FORMAT_CUSTOM_YCrCb_422_SP;
         break;
 
     case V4L2_PIX_FMT_YVYU:
