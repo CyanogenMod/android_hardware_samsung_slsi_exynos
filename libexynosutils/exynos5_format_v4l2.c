@@ -79,6 +79,10 @@ int HAL_PIXEL_FORMAT_2_V4L2_PIX(
         v4l2_pixel_format = V4L2_PIX_FMT_YVU420M;
         break;
 
+    case HAL_PIXEL_FORMAT_YV12:
+        v4l2_pixel_format = V4L2_PIX_FMT_YVU420;
+        break;
+
     case HAL_PIXEL_FORMAT_YCbCr_420_P:
         v4l2_pixel_format = V4L2_PIX_FMT_YUV420M;
         break;
@@ -179,6 +183,9 @@ int V4L2_PIX_2_HAL_PIXEL_FORMAT(
         break;
 
     case V4L2_PIX_FMT_YVU420:
+        hal_pixel_format = HAL_PIXEL_FORMAT_YV12;
+        break;
+
     case V4L2_PIX_FMT_YVU420M:
          hal_pixel_format = HAL_PIXEL_FORMAT_EXYNOS_YV12;
          break;
@@ -256,7 +263,8 @@ int NUM_PLANES(int hal_pixel_format)
 	break;
     case HAL_PIXEL_FORMAT_YCbCr_420_I:
     case HAL_PIXEL_FORMAT_CbYCrY_420_I:
-	return 1;
+    case HAL_PIXEL_FORMAT_YV12:
+        return 1;
     default:
 	return 1;
     }
@@ -297,6 +305,11 @@ unsigned int FRAME_SIZE(
     case HAL_PIXEL_FORMAT_CbYCrY_420_I:
         size = ALIGN(width, 16) * ALIGN(height, 16);
         frame_size = size + 2 * ALIGN(width >> 1, 8) * ALIGN(height >> 1, 8);
+        break;
+
+    case HAL_PIXEL_FORMAT_YV12:
+        size = ALIGN(width, 16) * height;
+        frame_size = size + ALIGN(width / 2, 16) * height;
         break;
 
     case HAL_PIXEL_FORMAT_EXYNOS_YCrCb_420_SP:
@@ -364,6 +377,11 @@ int PLANAR_FRAME_SIZE(int hal_pixel_format, int width, int height,
 	*chroma_size = ALIGN_TO_8KB(ALIGN_TO_128B(width) * 
 				    ALIGN_TO_32B(height >> 1));
 	break;
+    case HAL_PIXEL_FORMAT_YV12:
+        size = ALIGN(width, 16) * height;
+        *luma_size = size + ALIGN(width / 2, 16) * height;
+         break;
+
     default:
 	*luma_size = FRAME_SIZE(hal_pixel_format, width, height);
     }
