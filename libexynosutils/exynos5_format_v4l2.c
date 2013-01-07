@@ -114,6 +114,7 @@ int HAL_PIXEL_FORMAT_2_V4L2_PIX(
 
     case HAL_PIXEL_FORMAT_EXYNOS_YCrCb_420_SP:
     case HAL_PIXEL_FORMAT_CUSTOM_YCrCb_420_SP:
+    case HAL_PIXEL_FORMAT_YCrCb_420_SP:
         v4l2_pixel_format = V4L2_PIX_FMT_NV21M;
         break;
 
@@ -246,6 +247,7 @@ int NUM_PLANES(int hal_pixel_format)
     case HAL_PIXEL_FORMAT_YCbCr_420_P:
 	return 3;
     case HAL_PIXEL_FORMAT_EXYNOS_YCrCb_420_SP:
+    case HAL_PIXEL_FORMAT_YCrCb_420_SP:
     case HAL_PIXEL_FORMAT_YCbCr_420_SP:
     case HAL_PIXEL_FORMAT_CUSTOM_YCbCr_420_SP:
     case HAL_PIXEL_FORMAT_CUSTOM_YCrCb_420_SP:
@@ -298,6 +300,7 @@ unsigned int FRAME_SIZE(
         break;
 
     case HAL_PIXEL_FORMAT_EXYNOS_YCrCb_420_SP:
+    case HAL_PIXEL_FORMAT_YCrCb_420_SP:
     case HAL_PIXEL_FORMAT_YCbCr_420_SP:
     case HAL_PIXEL_FORMAT_CUSTOM_YCbCr_420_SP:
     case HAL_PIXEL_FORMAT_CUSTOM_YCrCb_420_SP:
@@ -346,6 +349,7 @@ int PLANAR_FRAME_SIZE(int hal_pixel_format, int width, int height,
 	*luma_size = size;
 	*chroma_size = size >> 2;
     case HAL_PIXEL_FORMAT_EXYNOS_YCrCb_420_SP:
+    case HAL_PIXEL_FORMAT_YCrCb_420_SP:
     case HAL_PIXEL_FORMAT_YCbCr_420_I:
     case HAL_PIXEL_FORMAT_CbYCrY_420_I:
     case HAL_PIXEL_FORMAT_YCbCr_420_SP:
