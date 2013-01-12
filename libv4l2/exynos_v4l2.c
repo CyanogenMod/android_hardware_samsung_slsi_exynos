@@ -541,6 +541,9 @@ int exynos_v4l2_dqbuf(int fd, struct v4l2_buffer *buf)
 
     ret = ioctl(fd, VIDIOC_DQBUF, buf);
     if (ret) {
+        if (errno == EAGAIN)
+            return -errno;
+
         ALOGW("failed to ioctl: VIDIOC_DQBUF (%d - %s)", errno, strerror(errno));
         return ret;
     }
