@@ -333,4 +333,126 @@ struct fimg2d_blit {
     unsigned int seq_no;
 };
 
+struct fimg2d_blit_raw {
+    enum blit_op op;
+    struct fimg2d_param param;
+    struct fimg2d_image src;
+    struct fimg2d_image msk;
+    struct fimg2d_image tmp;
+    struct fimg2d_image dst;
+    enum blit_sync sync;
+    unsigned int seq_no;
+};
+
+#ifdef __KERNEL__
+
+/**
+ * @pgd: base address of arm mmu pagetable
+ * @ncmd: request count in blit command queue
+ * @wait_q: conext wait queue head
+ */
+struct fimg2d_context {
+    struct mm_struct *mm;
+    atomic_t ncmd;
+    wait_queue_head_t wait_q;
+};
+
+/**
+ * @seq_no: used for debugging
+ * @node: list head of blit command queue
+ */
+struct fimg2d_bltcmd {
+    enum blit_op op;
+
+    enum premultiplied premult;
+    unsigned char g_alpha;
+    bool dither;
+    enum rotation rotate;
+    struct fimg2d_scale scaling;
+    struct fimg2d_repeat repeat;
+    struct fimg2d_bluscr bluscr;
+    struct fimg2d_clip clipping;
+
+    bool srcen;
+    bool dsten;
+    bool msken;
+
+    unsigned long solid_color;
+    struct fimg2d_image src;
+    struct fimg2d_image dst;
+    struct fimg2d_image msk;
+
+    struct fimg2d_rect src_rect;
+    struct fimg2d_rect dst_rect;
+    struct fimg2d_rect msk_rect;
+
+    size_t size_all;
+    struct fimg2d_cache src_cache;
+    struct fimg2d_cache dst_cache;
+    struct fimg2d_cache msk_cache;
+
+    unsigned int seq_no;
+    struct fimg2d_context *ctx;
+    struct list_head node;
+};
+
+/**
+ * @pwron: power status for runtime pm
+ * @pwrlock: spinlock for runtime pm
+ * @mem: resource platform device
+ * @regs: base address of hardware
+ * @dev: pointer to device struct
+ * @err: true if hardware is timed out while blitting
+ * @irq: irq number
+ * @nctx: context count
+ * @busy: 1 if hardware is running
+ * @bltlock: spinlock for blit
+ * @wait_q: blit wait queue head
+ * @cmd_q: blit command queue
+ * @workqueue: workqueue_struct for kfimg2dd
+ */
+struct fimg2d_control {
+    atomic_t pwron;
+    spinlock_t pwrlock;
+    struct clk *clock;
+    struct device *dev;
+    struct resource *mem;
+    void __iomem *regs;
+
+    bool err;
+    int irq;
+    atomic_t nctx;
+    atomic_t busy;
+    atomic_t active;
+    spinlock_t bltlock;
+    wait_queue_head_t wait_q;
+    struct list_head cmd_q;
+    struct workqueue_struct *work_q;
+
+    void (*blit)(struct fimg2d_control *info);
+    void (*configure)(struct fimg2d_control *info, struct fimg2d_bltcmd *cmd);
+    void (*run)(struct fimg2d_control *info);
+    void (*stop)(struct fimg2d_control *info);
+    void (*finalize)(struct fimg2d_control *info);
+};
+
+inline void fimg2d_enqueue(struct fimg2d_control *info,
+            struct list_head *node, struct list_head *q);
+inline void fimg2d_dequeue(struct fimg2d_control *info, struct list_head *node);
+inline int fimg2d_queue_is_empty(struct list_head *q);
+inline struct fimg2d_bltcmd * fimg2d_get_first_command(struct fimg2d_control *info);
+int fimg2d_add_command(struct fimg2d_control *info, struct fimg2d_context *ctx,
+            struct fimg2d_blit __user *u);
+inline void fimg2d_add_context(struct fimg2d_control *info, struct fimg2d_context *ctx);
+inline void fimg2d_del_context(struct fimg2d_control *info, struct fimg2d_context *ctx);
+int fimg2d_register_ops(struct fimg2d_control *info);
+#if defined(CONFIG_OUTER_CACHE) && defined(CONFIG_ARM)
+void fimg2d_clean_pagetable(struct mm_struct *mm, unsigned long addr,
+                                        unsigned long size);
+#else
+#define fimg2d_clean_pagetable(mm, addr, size) do { } while (0)
+#endif
+
+#endif /* __KERNEL__ */
+
 #endif /*_SEC_G2D_DRIVER_H_*/
