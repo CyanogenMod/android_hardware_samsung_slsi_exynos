@@ -58,7 +58,9 @@ struct ADDRS {
 /* 12  Y/CbCr 4:2:0 64x32 macroblocks */
 #define V4L2_PIX_FMT_NV12T    v4l2_fourcc('T', 'V', '1', '2')
 
-#define ALIGN(x, a)       (((x) + (a) - 1) & ~((a) - 1))
+#define ALIGN_UP(x, a)    (((x) + (a) - 1) & ~((a) - 1))
+#define ALIGN_DOWN(x, a)  ((x) - (x % a))
+#define ALIGN(x, a)       ALIGN_UP(x, a)
 #define ALIGN_TO_32B(x)   ((((x) + (1 <<  5) - 1) >>  5) <<  5)
 #define ALIGN_TO_128B(x)  ((((x) + (1 <<  7) - 1) >>  7) <<  7)
 #define ALIGN_TO_8KB(x)   ((((x) + (1 << 13) - 1) >> 13) << 13)
