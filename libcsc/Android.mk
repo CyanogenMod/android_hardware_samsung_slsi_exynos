@@ -34,7 +34,7 @@ LOCAL_SRC_FILES := \
 	csc.c
 
 LOCAL_C_INCLUDES := \
-	hardware/samsung_slsi/exynos5/include \
+	hardware/samsung_slsi/$(TARGET_BOARD_PLATFORM)/include \
 	hardware/samsung_slsi/openmax/include/khronos \
 	hardware/samsung_slsi/openmax/include/$(OMX_NAME) \
 	$(LOCAL_PATH)/../libexynosutils
