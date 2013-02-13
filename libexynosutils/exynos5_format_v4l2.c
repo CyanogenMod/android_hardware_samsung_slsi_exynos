@@ -351,16 +351,17 @@ unsigned int FRAME_SIZE(
 }
 
 int PLANAR_FRAME_SIZE(int hal_pixel_format, int width, int height,
-		      unsigned int *luma_size, unsigned int *chroma_size)
+                        unsigned int *luma_size, unsigned int *chroma_size)
 {
-    unsigned int size       = 0;
+    unsigned int size = 0;
 
     switch(hal_pixel_format) {
     case HAL_PIXEL_FORMAT_EXYNOS_YV12:
     case HAL_PIXEL_FORMAT_YCbCr_420_P:
         size = width * height;
-	*luma_size = size;
-	*chroma_size = size >> 2;
+        *luma_size = size;
+        *chroma_size = size >> 2;
+        break;
     case HAL_PIXEL_FORMAT_EXYNOS_YCrCb_420_SP:
     case HAL_PIXEL_FORMAT_YCrCb_420_SP:
     case HAL_PIXEL_FORMAT_YCbCr_420_I:
@@ -369,22 +370,23 @@ int PLANAR_FRAME_SIZE(int hal_pixel_format, int width, int height,
     case HAL_PIXEL_FORMAT_CUSTOM_YCbCr_420_SP:
     case HAL_PIXEL_FORMAT_CUSTOM_YCrCb_420_SP:
         size = width * height;
-	*luma_size = size;
-	*chroma_size = (size >> 2) << 1;
+        *luma_size = size;
+        *chroma_size = (size >> 2) << 1;
         break;
     case HAL_PIXEL_FORMAT_CUSTOM_YCbCr_420_SP_TILED:
         *luma_size = ALIGN_TO_8KB(ALIGN_TO_128B(width) * ALIGN_TO_32B(height));
-	*chroma_size = ALIGN_TO_8KB(ALIGN_TO_128B(width) * 
-				    ALIGN_TO_32B(height >> 1));
-	break;
+        *chroma_size = ALIGN_TO_8KB(ALIGN_TO_128B(width) *
+                        ALIGN_TO_32B(height >> 1));
+        break;
     case HAL_PIXEL_FORMAT_YV12:
         size = ALIGN(width, 16) * height;
         *luma_size = size + ALIGN(width / 2, 16) * height;
-         break;
-
+        break;
     default:
-	*luma_size = FRAME_SIZE(hal_pixel_format, width, height);
+        *luma_size = FRAME_SIZE(hal_pixel_format, width, height);
+        break;
     }
+
     return 0;
 }
 
