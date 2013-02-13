@@ -356,7 +356,7 @@ static CSC_ERRORCODE csc_init_hw(
 #endif
         default:
             ALOGE("%s:: unsupported csc_hw_type, csc use sw", __func__);
-            csc_handle->csc_hw_handle == NULL;
+            csc_handle->csc_hw_handle = NULL;
             break;
         }
     }
@@ -476,6 +476,9 @@ CSC_ERRORCODE csc_deinit(
     CSC_ERRORCODE ret = CSC_ErrorNone;
     CSC_HANDLE *csc_handle;
 
+    if (handle == NULL)
+        return ret;
+
     csc_handle = (CSC_HANDLE *)handle;
     if (csc_handle->csc_method == CSC_METHOD_HW) {
         switch (csc_handle->csc_hw_type) {
@@ -495,10 +498,8 @@ CSC_ERRORCODE csc_deinit(
         }
     }
 
-    if (csc_handle != NULL) {
-        free(csc_handle);
-        ret = CSC_ErrorNone;
-    }
+    free(csc_handle);
+    ret = CSC_ErrorNone;
 
     return ret;
 }
