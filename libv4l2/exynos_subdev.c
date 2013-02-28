@@ -82,7 +82,7 @@ int exynos_subdev_get_node_num(const char *devname, int oflag, ...)
             break;
 
         /* video device node */
-        sprintf(filename, "/dev/v4l-subdev%d", i++);
+        snprintf(filename, sizeof(filename), "/dev/v4l-subdev%d", i++);
 
         /* if the node is video device */
         if ((lstat(filename, &s) == 0) && S_ISCHR(s.st_mode) &&
@@ -90,7 +90,7 @@ int exynos_subdev_get_node_num(const char *devname, int oflag, ...)
             minor = (int)((unsigned short)(s.st_rdev & 0x3f));
             ALOGD("try node: %s, minor: %d", filename, minor);
             /* open sysfs entry */
-            sprintf(filename, "/sys/class/video4linux/v4l-subdev%d/name", minor);
+            snprintf(filename, sizeof(filename), "/sys/class/video4linux/v4l-subdev%d/name", minor);
             stream_fd = fopen(filename, "r");
             if (stream_fd == NULL) {
                 ALOGE("failed to open sysfs entry for subdev");
@@ -137,7 +137,7 @@ int exynos_subdev_open_devname(const char *devname, int oflag, ...)
             break;
 
         /* video device node */
-        sprintf(filename, "/dev/v4l-subdev%d", i++);
+        snprintf(filename, sizeof(filename), "/dev/v4l-subdev%d", i++);
 
         /* if the node is video device */
         if ((lstat(filename, &s) == 0) && S_ISCHR(s.st_mode) &&
@@ -145,7 +145,7 @@ int exynos_subdev_open_devname(const char *devname, int oflag, ...)
             minor = (int)((unsigned short)(s.st_rdev & 0x3f));
             ALOGD("try node: %s, minor: %d", filename, minor);
             /* open sysfs entry */
-            sprintf(filename, "/sys/class/video4linux/v4l-subdev%d/name", minor);
+            snprintf(filename, sizeof(filename), "/sys/class/video4linux/v4l-subdev%d/name", minor);
             stream_fd = fopen(filename, "r");
             if (stream_fd == NULL) {
                 ALOGE("failed to open sysfs entry for subdev");

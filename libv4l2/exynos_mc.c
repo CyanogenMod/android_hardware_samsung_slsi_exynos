@@ -171,7 +171,7 @@ static int __media_get_devname_sysfs(struct media_entity *entity)
     char *p;
     int ret;
 
-    sprintf(sysname, "/sys/dev/char/%u:%u", entity->info.v4l.major,
+    snprintf(sysname, sizeof(sysname), "/sys/dev/char/%u:%u", entity->info.v4l.major,
         entity->info.v4l.minor);
 
     ret = readlink(sysname, target, sizeof(target));
@@ -183,10 +183,10 @@ static int __media_get_devname_sysfs(struct media_entity *entity)
     if (p == NULL)
         return -EINVAL;
 
-    sprintf(devname, "/tmp/%s", p + 1);
+    snprintf(devname, sizeof(devname), "/tmp/%s", p + 1);
 
     ret = mknod(devname, 0666 | S_IFCHR, MKDEV(81, entity->info.v4l.minor));
-    strcpy(entity->devname, devname);
+    strncpy(entity->devname, devname, 32);
 
     return 0;
 }

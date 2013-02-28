@@ -121,7 +121,7 @@ int exynos_v4l2_open_devname(const char *devname, int oflag, ...)
             break;
 
         /* video device node */
-        sprintf(filename, "/dev/video%d", i++);
+        snprintf(filename, sizeof(filename), "/dev/video%d", i++);
 
         /* if the node is video device */
         if ((lstat(filename, &s) == 0) && S_ISCHR(s.st_mode) &&
@@ -129,7 +129,7 @@ int exynos_v4l2_open_devname(const char *devname, int oflag, ...)
             minor = (int)((unsigned short)(s.st_rdev & 0x3f));
             ALOGD("try node: %s, minor: %d", filename, minor);
             /* open sysfs entry */
-            sprintf(filename, "/sys/class/video4linux/video%d/name", minor);
+            snprintf(filename, sizeof(filename), "/sys/class/video4linux/video%d/name", minor);
             stream_fd = fopen(filename, "r");
             if (stream_fd == NULL) {
                 ALOGE("failed to open sysfs entry for videodev");
@@ -201,7 +201,7 @@ bool exynos_v4l2_enuminput(int fd, int index, char *input_name_buf)
     }
 
     input.index = index;
-    ret = ioctl(fd, VIDIOC_ENUMINPUT, &input);
+    ret = ioctl(fd, VIDIOC_ENUMINPUT, &input, 32);
     if (ret) {
         ALOGE("%s: no matching index founds", __func__);
         return false;
@@ -209,7 +209,7 @@ bool exynos_v4l2_enuminput(int fd, int index, char *input_name_buf)
 
     ALOGI("Name of input channel[%d] is %s", input.index, input.name);
 
-    strcpy(input_name_buf, (const char *)input.name);
+    strncpy(input_name_buf, (const char *)input.name, 32);
 
     Exynos_v4l2_Out();
 
