@@ -1,5 +1,7 @@
 LOCAL_PATH := $(call my-dir)
 
+PLATFORM_DIR := $(TARGET_BOARD_PLATFORM)-insignal
+
 OMX_NAME := exynos
 
 include $(CLEAR_VARS)
@@ -13,7 +15,7 @@ LOCAL_C_INCLUDES := \
 	system/core/include \
 	hardware/samsung_slsi/openmax/include/khronos \
 	hardware/samsung_slsi/openmax/include/$(OMX_NAME) \
-	hardware/samsung_slsi/$(TARGET_BOARD_PLATFORM)/include \
+	hardware/samsung_slsi/$(PLATFORM_DIR)/include \
 	$(LOCAL_PATH)/../include
 
 LOCAL_CFLAGS := \
@@ -34,7 +36,7 @@ LOCAL_SRC_FILES := \
 	csc.c
 
 LOCAL_C_INCLUDES := \
-	hardware/samsung_slsi/$(TARGET_BOARD_PLATFORM)/include \
+	hardware/samsung_slsi/$(PLATFORM_DIR)/include \
 	hardware/samsung_slsi/openmax/include/khronos \
 	hardware/samsung_slsi/openmax/include/$(OMX_NAME) \
 	$(LOCAL_PATH)/../libexynosutils

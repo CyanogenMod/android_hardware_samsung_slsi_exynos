@@ -14,6 +14,8 @@
 # limitations under the License.
 #
 
+ifeq ($(TARGET_SLSI_VARIANT),insignal)
+
 common_exynos_dirs := \
 	libstagefrighthw \
 	libcsc \
@@ -22,3 +24,5 @@ common_exynos_dirs := \
 	libfimg4x
 
 include $(call all-named-subdir-makefiles,$(common_exynos_dirs))
+
+endif
