@@ -11,7 +11,12 @@ LOCAL_SRC_FILES := \
 
 LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
 
-LOCAL_C_INCLUDES := \
+ifneq ($(BOARD_USE_KHRONOS_OMX_HEADER),true)
+LOCAL_C_INCLUDES += \
+	frameworks/native/include/media/openmax
+endif
+
+LOCAL_C_INCLUDES += \
 	system/core/include \
 	hardware/samsung_slsi/openmax/include/khronos \
 	hardware/samsung_slsi/openmax/include/$(OMX_NAME) \
