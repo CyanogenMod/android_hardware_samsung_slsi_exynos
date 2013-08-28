@@ -754,3 +754,35 @@ CSC_ERRORCODE csc_convert(
 
     return ret;
 }
+
+#ifdef USE_CONVERT_WITH_ROTATE
+CSC_ERRORCODE csc_convert_with_rotation(
+    void *handle,
+    int rot,
+    int flip_horiz,
+    int flip_vert)
+{
+    CSC_HANDLE *csc_handle = (CSC_HANDLE *)handle;
+    CSC_ERRORCODE ret = CSC_ErrorNone;
+
+    if (csc_handle == NULL)
+        return CSC_ErrorNotInit;
+
+    if ((csc_handle->csc_method == CSC_METHOD_HW) &&
+        (csc_handle->csc_hw_handle == NULL))
+        csc_init_hw(handle);
+
+    csc_set_format(csc_handle);
+    csc_set_buffer(csc_handle);
+
+    exynos_gsc_set_rotation(csc_handle->csc_hw_handle,
+            rot, flip_horiz, flip_vert);
+
+    if (csc_handle->csc_method == CSC_METHOD_HW)
+        ret = conv_hw(csc_handle);
+    else
+        ret = conv_sw(csc_handle);
+
+    return ret;
+}
+#endif
