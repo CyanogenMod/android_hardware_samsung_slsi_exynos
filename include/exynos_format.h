@@ -30,7 +30,7 @@ enum {
     HAL_PIXEL_FORMAT_YCbCr_420_SP               = 0x105,
     HAL_PIXEL_FORMAT_YCrCb_422_SP               = 0x106,
     HAL_PIXEL_FORMAT_YCbCr_420_SP_TILED         = 0x107,
-    HAL_PIXEL_FORMAT_ARGB888                    = 0x108,
+    HAL_PIXEL_FORMAT_CUSTOM_ARGB_8888           = 0x108,
     // support custom format for zero copy
     HAL_PIXEL_FORMAT_CUSTOM_YCbCr_420_SP        = 0x110,
     HAL_PIXEL_FORMAT_CUSTOM_YCrCb_420_SP        = 0x111,
@@ -45,6 +45,7 @@ enum {
 
     HAL_PIXEL_FORMAT_EXYNOS_YV12                = 0x11C,
     HAL_PIXEL_FORMAT_EXYNOS_YCrCb_420_SP        = 0x11D,
+    HAL_PIXEL_FORMAT_EXYNOS_YCrCb_420_SP_FULL   = 0x11E,
     HAL_PIXEL_FORMAT_CUSTOM_MAX
 };
 
@@ -152,7 +153,7 @@ int V4L2_PIX_2_YUV_INFO(
  * @return
  *   bpp
  */
-unsigned int get_yuv_bpp(
+int get_yuv_bpp(
     unsigned int v4l2_pixel_format);
 
 /*
@@ -164,7 +165,7 @@ unsigned int get_yuv_bpp(
  * @return
  *   num of plane
  */
-unsigned int get_yuv_planes(
+int get_yuv_planes(
     unsigned int v4l2_pixel_format);
 
 #ifdef __cplusplus

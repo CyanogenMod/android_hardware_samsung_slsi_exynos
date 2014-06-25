@@ -60,9 +60,14 @@
  * V 4 L 2   F I M C   E X T E N S I O N S
  *
 */
+#define V4L2_PIX_FMT_YVYU       v4l2_fourcc('Y', 'V', 'Y', 'U')
+
 /* FOURCC for FIMC specific */
 #define V4L2_PIX_FMT_NV12X      v4l2_fourcc('N', '1', '2', 'X')
 #define V4L2_PIX_FMT_NV21X      v4l2_fourcc('N', '2', '1', 'X')
+#define V4L2_PIX_FMT_VYUY       v4l2_fourcc('V', 'Y', 'U', 'Y')
+#define V4L2_PIX_FMT_NV16       v4l2_fourcc('N', 'V', '1', '6')
+#define V4L2_PIX_FMT_NV61       v4l2_fourcc('N', 'V', '6', '1')
 #define V4L2_PIX_FMT_NV16X      v4l2_fourcc('N', '1', '6', 'X')
 #define V4L2_PIX_FMT_NV61X      v4l2_fourcc('N', '6', '1', 'X')
 

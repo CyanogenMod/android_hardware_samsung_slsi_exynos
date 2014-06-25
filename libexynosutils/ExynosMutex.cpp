@@ -47,6 +47,7 @@ ExynosMutex::ExynosMutex()
     m_mutex = NULL;
     m_flagCreate = false;
     m_type = TYPE_BASE;
+    memset(m_name, 0, 128);
 }
 
 ExynosMutex::~ExynosMutex()
@@ -85,7 +86,7 @@ bool ExynosMutex::create(int type, char* name)
     }
 
     m_type = type;
-    strcpy(m_name, name);
+    strncpy(m_name, name, 128 - 1);
 
     m_flagCreate = true;
 

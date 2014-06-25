@@ -175,7 +175,7 @@ static int __media_get_devname_sysfs(struct media_entity *entity)
         entity->info.v4l.minor);
 
     ret = readlink(sysname, target, sizeof(target));
-    if (ret < 0)
+    if (ret < 0 || ret >= sizeof(target))
         return -errno;
 
     target[ret] = '\0';
@@ -186,7 +186,7 @@ static int __media_get_devname_sysfs(struct media_entity *entity)
     snprintf(devname, sizeof(devname), "/tmp/%s", p + 1);
 
     ret = mknod(devname, 0666 | S_IFCHR, MKDEV(81, entity->info.v4l.minor));
-    strncpy(entity->devname, devname, 32);
+    strncpy(entity->devname, devname, sizeof(devname) - 1);
 
     return 0;
 }

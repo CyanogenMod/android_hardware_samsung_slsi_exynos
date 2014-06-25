@@ -17,6 +17,8 @@
 LOCAL_PATH:= $(call my-dir)
 include $(CLEAR_VARS)
 
+PLATFORM_DIR := $(TARGET_BOARD_PLATFORM)-insignal
+
 ifeq ($(BOARD_USES_SKIA_FIMGAPI),true)
 LOCAL_MODULE_TAGS := optional
 
@@ -26,7 +28,9 @@ LOCAL_SRC_FILES:= \
 
 LOCAL_C_INCLUDES += \
 	$(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr/include \
-	$(LOCAL_PATH)/../include
+	$(LOCAL_PATH)/../include \
+	hardware/samsung_slsi/$(TARGET_SOC)/include \
+	hardware/samsung_slsi/$(PLATFORM_DIR)/include
 
 LOCAL_ADDITIONAL_DEPENDENCIES := \
 	$(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr

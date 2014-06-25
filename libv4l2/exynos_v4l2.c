@@ -130,6 +130,10 @@ int exynos_v4l2_open_devname(const char *devname, int oflag, ...)
             ALOGD("try node: %s, minor: %d", filename, minor);
             /* open sysfs entry */
             snprintf(filename, sizeof(filename), "/sys/class/video4linux/video%d/name", minor);
+            if (S_ISLNK(s.st_mode)) {
+                ALOGE("symbolic link detected");
+                return -1;
+            }
             stream_fd = fopen(filename, "r");
             if (stream_fd == NULL) {
                 ALOGE("failed to open sysfs entry for videodev");
@@ -154,7 +158,7 @@ int exynos_v4l2_open_devname(const char *devname, int oflag, ...)
     } while (found == false);
 
     if (found) {
-        sprintf(filename, "/dev/video%d", minor);
+        snprintf(filename, sizeof(filename), "/dev/video%d", minor);
         va_start(ap, oflag);
         fd = __v4l2_open(filename, oflag, ap);
         va_end(ap);

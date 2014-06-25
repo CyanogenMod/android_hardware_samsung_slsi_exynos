@@ -41,6 +41,8 @@
 #include "exynos_format.h"
 #include "s5p_fimc_v4l2.h"
 #include <utils/Log.h>
+#include <linux/videodev2.h>
+#include <linux/videodev2_exynos_media.h>
 
 int HAL_PIXEL_FORMAT_2_V4L2_PIX(
     int hal_pixel_format)
@@ -63,14 +65,6 @@ int HAL_PIXEL_FORMAT_2_V4L2_PIX(
 
     case HAL_PIXEL_FORMAT_BGRA_8888:
         v4l2_pixel_format = V4L2_PIX_FMT_BGR32;
-        break;
-
-    case HAL_PIXEL_FORMAT_RGBA_5551:
-        v4l2_pixel_format = V4L2_PIX_FMT_RGB555X;
-        break;
-
-    case HAL_PIXEL_FORMAT_RGBA_4444:
-        v4l2_pixel_format = V4L2_PIX_FMT_RGB444;
         break;
 
     case HAL_PIXEL_FORMAT_EXYNOS_YV12:
@@ -121,12 +115,20 @@ int HAL_PIXEL_FORMAT_2_V4L2_PIX(
         break;
 
    case HAL_PIXEL_FORMAT_YCbCr_420_SP_TILED:
-        v4l2_pixel_format = V4L2_PIX_FMT_NV12MT_16X16;
-        break;
+#ifdef ENABLE_FIMC
+	v4l2_pixel_format = V4L2_PIX_FMT_NV12MT;
+#else
+	v4l2_pixel_format = V4L2_PIX_FMT_NV12MT_16X16;
+#endif
+	break;
 
     case HAL_PIXEL_FORMAT_CUSTOM_YCbCr_420_SP_TILED:
-        v4l2_pixel_format = V4L2_PIX_FMT_NV12MT_16X16;
-        break;
+#ifdef ENABLE_FIMC
+	v4l2_pixel_format = V4L2_PIX_FMT_NV12MT;
+#else
+	v4l2_pixel_format = V4L2_PIX_FMT_NV12MT_16X16;
+#endif
+	break;
 
    case HAL_PIXEL_FORMAT_CUSTOM_YCrCb_422_I:
         v4l2_pixel_format = V4L2_PIX_FMT_YVYU;
@@ -165,14 +167,6 @@ int V4L2_PIX_2_HAL_PIXEL_FORMAT(
 
     case V4L2_PIX_FMT_BGR32:
         hal_pixel_format = HAL_PIXEL_FORMAT_BGRA_8888;
-        break;
-
-    case V4L2_PIX_FMT_RGB555X:
-        hal_pixel_format = HAL_PIXEL_FORMAT_RGBA_5551;
-        break;
-
-    case V4L2_PIX_FMT_RGB444:
-        hal_pixel_format = HAL_PIXEL_FORMAT_RGBA_4444;
         break;
 
     case V4L2_PIX_FMT_YUV420:
@@ -219,8 +213,8 @@ int V4L2_PIX_2_HAL_PIXEL_FORMAT(
     case V4L2_PIX_FMT_NV21:
         hal_pixel_format = HAL_PIXEL_FORMAT_CUSTOM_YCrCb_420_SP;
         break;
+    case V4L2_PIX_FMT_NV12MT:
     case V4L2_PIX_FMT_NV12MT_16X16:
-
         hal_pixel_format = HAL_PIXEL_FORMAT_YCbCr_420_SP_TILED;
         break;
 
@@ -279,8 +273,6 @@ unsigned int FRAME_SIZE(
     switch (hal_pixel_format) {
     // 16bpp
     case HAL_PIXEL_FORMAT_RGB_565:
-    case HAL_PIXEL_FORMAT_RGBA_5551:
-    case HAL_PIXEL_FORMAT_RGBA_4444:
         frame_size = GET_16BPP_FRAME_SIZE(width, height);
         break;
 
@@ -400,6 +392,7 @@ int V4L2_PIX_2_YUV_INFO(unsigned int v4l2_pixel_format, unsigned int * bpp, unsi
     case V4L2_PIX_FMT_NV21X:
     case V4L2_PIX_FMT_NV12M:
     case V4L2_PIX_FMT_NV21M:
+    case V4L2_PIX_FMT_NV12MT:
     case V4L2_PIX_FMT_NV12MT_16X16:
         *bpp    = 12;
         *planes = 2;
@@ -407,6 +400,7 @@ int V4L2_PIX_2_YUV_INFO(unsigned int v4l2_pixel_format, unsigned int * bpp, unsi
     case V4L2_PIX_FMT_YUV420:
     case V4L2_PIX_FMT_YUV420M:
     case V4L2_PIX_FMT_YVU420M:
+    case V4L2_PIX_FMT_YVU420:
         *bpp    = 12;
         *planes = 3;
         break;
@@ -436,7 +430,7 @@ int V4L2_PIX_2_YUV_INFO(unsigned int v4l2_pixel_format, unsigned int * bpp, unsi
     return 0;
 }
 
-unsigned int get_yuv_bpp(unsigned int v4l2_pixel_format)
+int get_yuv_bpp(unsigned int v4l2_pixel_format)
 {
     unsigned int bpp, planes;
 
@@ -446,7 +440,7 @@ unsigned int get_yuv_bpp(unsigned int v4l2_pixel_format)
     return bpp;
 }
 
-unsigned int get_yuv_planes(unsigned int v4l2_pixel_format)
+int get_yuv_planes(unsigned int v4l2_pixel_format)
 {
     unsigned int bpp, planes;
 
