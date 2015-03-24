@@ -195,7 +195,9 @@ int exynos_v4l2_close(int fd)
 bool exynos_v4l2_enuminput(int fd, int index, char *input_name_buf)
 {
     int ret = -1;
-    struct v4l2_input input;
+    struct v4l2_input input = {
+        .index = index,
+    };
 
     Exynos_v4l2_In();
 
@@ -204,7 +206,6 @@ bool exynos_v4l2_enuminput(int fd, int index, char *input_name_buf)
         return NULL;
     }
 
-    input.index = index;
     ret = ioctl(fd, VIDIOC_ENUMINPUT, &input, 32);
     if (ret) {
         ALOGE("%s: no matching index founds", __func__);
@@ -223,7 +224,9 @@ bool exynos_v4l2_enuminput(int fd, int index, char *input_name_buf)
 int exynos_v4l2_s_input(int fd, int index)
 {
     int ret = -1;
-    struct v4l2_input input;
+    struct v4l2_input input = {
+        .index = index,
+    };
 
     Exynos_v4l2_In();
 
@@ -231,8 +234,6 @@ int exynos_v4l2_s_input(int fd, int index)
         ALOGE("%s: invalid fd: %d", __func__, fd);
         return ret;
     }
-
-    input.index = index;
 
     ret = ioctl(fd, VIDIOC_S_INPUT, &input);
     if (ret){
@@ -286,13 +287,13 @@ bool exynos_v4l2_querycap(int fd, unsigned int need_caps)
 
 bool exynos_v4l2_enum_fmt(int fd, enum v4l2_buf_type type, unsigned int fmt)
 {
-    struct v4l2_fmtdesc fmtdesc;
+    struct v4l2_fmtdesc fmtdesc = {
+        .index = 0,
+        .type = type,
+    };
     int found = 0;
 
     Exynos_v4l2_In();
-
-    fmtdesc.type = type;
-    fmtdesc.index = 0;
 
     while (ioctl(fd, VIDIOC_ENUM_FMT, &fmtdesc) == 0) {
         if (fmtdesc.pixelformat == fmt) {
@@ -737,12 +738,12 @@ int exynos_v4l2_g_ctrl(int fd, unsigned int id, int *value)
 int exynos_v4l2_s_ctrl(int fd, unsigned int id, int value)
 {
     int ret = -1;
-    struct v4l2_control ctrl;
+    struct v4l2_control ctrl = {
+        .id = id,
+        .value = value,
+    };
 
     Exynos_v4l2_In();
-
-    ctrl.id = id;
-    ctrl.value = value;
 
     if (fd < 0) {
         ALOGE("%s: invalid fd: %d", __func__, fd);
